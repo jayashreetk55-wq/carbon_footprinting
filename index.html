@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Delivery Carbon Footprint Tracker | Estimate & Reduce Delivery Emissions</title>
+  <meta name="description" content="Calculate the carbon footprint of your food delivery orders using real-world OpenStreetMap road routing, scientific emission factors, and eco-friendly tips.">
+  <meta name="theme-color" content="#2d6a4f">
+
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN with fallback compatibility -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" defer></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Accessible Skip Link -->
+  <a href="#calculator" class="skip-link">Skip to calculator</a>
+
+  <!-- Header & Navigation -->
+  <header class="site-header" id="header">
+    <div class="container header-container">
+      <a href="#hero" class="brand-logo" aria-label="Food Delivery Carbon Footprint Tracker Homepage">
+        <span class="logo-icon-wrapper" aria-hidden="true">
+          <svg class="leaf-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M26 6C19 6 12 11 9 17C6 23 8 26 8 26C8 26 11 28 17 25C23 22 28 15 28 8C28 6.9 27.1 6 26 6Z" fill="#2D6A4F" fill-opacity="0.2"/>
+            <path d="M26 6C19 6 12 11 9 17C6 23 8 26 8 26C8 26 11 28 17 25C23 22 28 15 28 8C28 6.9 27.1 6 26 6Z" stroke="#2D6A4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 26C13 21 18 16 26 6" stroke="#52B788" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 20C17 20 20 18 20 18" stroke="#52B788" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 15C13 13 16 12 16 12" stroke="#52B788" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <div class="brand-text">
+          <span class="brand-title">EcoTrack</span>
+          <span class="brand-tag">Food Delivery</span>
+        </div>
+      </a>
+
+      <nav class="site-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#calculator" class="nav-link">Calculator</a></li>
+          <li><a href="#tips" class="nav-link">Eco Tips</a></li>
+          <li><a href="#history" class="nav-link">Order History</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="#calculator" class="btn btn-sm btn-primary">Start Tracking</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- 1. Home / Hero Section -->
+    <section class="hero-section" id="hero">
+      <div class="container hero-container">
+        <div class="hero-content">
+          <div class="badge-pill">
+            <span class="badge-dot" aria-hidden="true"></span>
+            <span>Real-World Routing & Scientific Emissions</span>
+          </div>
+
+          <h1 class="hero-title">Food Delivery Carbon Footprint Tracker</h1>
+          
+          <p class="hero-subtitle">Track your delivery. Reduce your footprint.</p>
+
+          <p class="hero-description">
+            Food delivery brings warm meals right to your doorstep, but every order carries an environmental cost. 
+            Powered by real-world OpenStreetMap road routing and scientific greenhouse gas lifecycle data, 
+            discover the carbon impact of your takeaway and unlock practical ways to make every meal greener.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="#calculator" class="btn btn-lg btn-primary" id="btn-hero-calculate">
+              <span>Calculate My Footprint</span>
+              <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor" width="20" height="20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+            <a href="#tips" class="btn btn-lg btn-outline">Explore Eco Tips</a>
+          </div>
+
+          <!-- Feature highlights -->
+          <div class="hero-highlights" aria-label="Key features">
+            <div class="highlight-item">
+              <span class="highlight-icon">🗺️</span>
+              <div>
+                <strong>OSRM Road Routing</strong>
+                <span>Real road network distance</span>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">🔬</span>
+              <div>
+                <strong>Scientific Factors</strong>
+                <span>UK DESNZ & LCA benchmarks</span>
+              </div>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">💾</span>
+              <div>
+                <strong>SQLite Database</strong>
+                <span>Persistent full-stack storage</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="eco-card-preview">
+            <div class="preview-header">
+              <span class="preview-tag">Typical Delivery Impact</span>
+              <span class="preview-status status-low">Bicycle Swap: -100% Tailpipe CO₂</span>
+            </div>
+            <div class="preview-metrics">
+              <div class="metric-block">
+                <span class="metric-num">~170g</span>
+                <span class="metric-label">CO₂e / km (Car)</span>
+              </div>
+              <div class="metric-arrow">vs</div>
+              <div class="metric-block highlight">
+                <span class="metric-num">0g</span>
+                <span class="metric-label">CO₂e / km (Bike)</span>
+              </div>
+            </div>
+            <div class="preview-footer">
+              <span class="preview-hint">Real road routing by OpenStreetMap OSRM • Scientific LCA data</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Carbon Footprint Calculator Section -->
+    <section class="calculator-section" id="calculator">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Interactive Full-Stack Tool</span>
+          <h2 class="section-title">Carbon Footprint Calculator</h2>
+          <p class="section-subtitle">
+            Enter pickup & delivery addresses for real road routing, or specify distance directly.
+          </p>
+        </div>
+
+        <div class="calculator-card">
+          <!-- Live API Alert / Error Banner -->
+          <div id="route-api-alert" class="api-alert" style="display: none;" role="alert">
+            <span class="alert-icon" aria-hidden="true">⚠️</span>
+            <div class="alert-text">
+              <strong id="alert-title">Route Calculation Notice:</strong>
+              <span id="alert-message">Notice message</span>
+            </div>
+            <button type="button" class="alert-close-btn" id="alert-close-btn" aria-label="Close notification">✕</button>
+          </div>
+
+          <form id="footprint-form" novalidate autocomplete="on">
+            <div class="form-grid">
+
+              <!-- Field 1: Order Name -->
+              <div class="form-group full-width">
+                <label for="order-name" class="form-label">
+                  Food Order Name
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+                <span id="order-name-hint" class="field-hint">Give your meal a name (e.g., Thai Green Curry, Margherita Pizza)</span>
+                
+                <div class="input-wrapper">
+                  <input 
+                    type="text" 
+                    id="order-name" 
+                    name="orderName" 
+                    class="form-control" 
+                    placeholder="e.g., Veggie Burrito Bowl & Kombucha" 
+                    required 
+                    minlength="2"
+                    maxlength="60"
+                    aria-describedby="order-name-hint order-name-error"
+                  >
+                  <span class="input-icon" aria-hidden="true">🍲</span>
+                </div>
+                <div id="order-name-error" class="error-msg" role="alert" aria-live="polite">
+                  Please enter an order name (at least 2 characters).
+                </div>
+
+                <!-- Quick suggestion chips -->
+                <div class="suggestion-chips" aria-label="Quick order suggestions">
+                  <span class="chips-label">Quick suggestions:</span>
+                  <button type="button" class="chip-btn" data-fill="Veggie Burrito Bowl">Burrito Bowl</button>
+                  <button type="button" class="chip-btn" data-fill="Margherita Pizza & Drink">Margherita Pizza</button>
+                  <button type="button" class="chip-btn" data-fill="Sushi Bento Box">Sushi Bento</button>
+                  <button type="button" class="chip-btn" data-fill="Paneer Tikka with Rice">Paneer Tikka</button>
+                </div>
+              </div>
+
+              <!-- Real-world Address Routing Section (OpenStreetMap / OSRM) -->
+              <div class="form-group full-width route-address-section">
+                <div class="route-section-header">
+                  <div class="route-header-title">
+                    <span class="route-tag">Real-World Road Routing</span>
+                    <h3 class="route-title">Pickup & Delivery Addresses (Optional for Live Routing)</h3>
+                  </div>
+                  <span class="osm-attribution-badge" title="Powered by OpenStreetMap data">
+                    <svg class="osm-icon" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" aria-hidden="true">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <span>OSRM & Nominatim</span>
+                  </span>
+                </div>
+                <span class="field-hint">
+                  Enter pickup and delivery locations to calculate exact road-network distance and estimated transit duration via OSRM.
+                </span>
+
+                <div class="address-inputs-grid">
+                  <div class="address-field">
+                    <label for="pickup-address" class="address-label">
+                      <span class="pin-icon pin-pickup" aria-hidden="true">📍</span>
+                      Restaurant / Pickup Address
+                    </label>
+                    <div class="input-wrapper">
+                      <input 
+                        type="text" 
+                        id="pickup-address" 
+                        class="form-control" 
+                        placeholder="e.g., Times Square, New York" 
+                        maxlength="150"
+                      >
+                    </div>
+                  </div>
+
+                  <div class="address-field">
+                    <label for="delivery-address" class="address-label">
+                      <span class="pin-icon pin-delivery" aria-hidden="true">🏁</span>
+                      Delivery Destination Address
+                    </label>
+                    <div class="input-wrapper">
+                      <input 
+                        type="text" 
+                        id="delivery-address" 
+                        class="form-control" 
+                        placeholder="e.g., Empire State Building, New York" 
+                        maxlength="150"
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Find Route Button & Suggestion Pairs -->
+                <div class="route-actions-row">
+                  <button type="button" class="btn btn-sm btn-route" id="btn-find-route">
+                    <span class="route-btn-spinner" id="route-spinner" style="display: none;" aria-hidden="true"></span>
+                    <svg class="btn-icon" id="route-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l3.707 3.707A1 1 0 0019 17.414V7a1 1 0 00-.293-.707l-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <span id="route-btn-text">Calculate Road Route (OSRM)</span>
+                  </button>
+
+                  <div class="route-presets-chips">
+                    <span class="chips-label">Demo Routes:</span>
+                    <button type="button" class="chip-btn route-demo-chip" data-pickup="Times Square, New York" data-delivery="Empire State Building, New York">NYC: Times Sq → Empire State</button>
+                    <button type="button" class="chip-btn route-demo-chip" data-pickup="Eiffel Tower, Paris" data-delivery="Louvre Museum, Paris">Paris: Eiffel → Louvre</button>
+                    <button type="button" class="chip-btn route-demo-chip" data-pickup="Trafalgar Square, London" data-delivery="Tower Bridge, London">London: Trafalgar → Tower Bridge</button>
+                  </div>
+                </div>
+
+                <!-- Live Route Details Box (Shown when route calculated) -->
+                <div class="route-info-card" id="route-info-card" style="display: none;">
+                  <div class="route-info-header">
+                    <span class="route-info-status">
+                      <span class="route-status-dot" aria-hidden="true"></span>
+                      <span>Road Route Retrieved</span>
+                    </span>
+                    <span class="route-provider-tag" id="route-provider-display">OSRM (OpenStreetMap)</span>
+                  </div>
+
+                  <div class="route-metrics-row">
+                    <div class="route-metric-pill">
+                      <span class="metric-pill-label">Road Distance</span>
+                      <strong class="metric-pill-val" id="route-distance-display">0.0 km</strong>
+                    </div>
+                    <div class="route-metric-pill">
+                      <span class="metric-pill-label">Est. Travel Time</span>
+                      <strong class="metric-pill-val" id="route-duration-display">~0 mins</strong>
+                    </div>
+                    <div class="route-metric-pill">
+                      <span class="metric-pill-label">Routing Status</span>
+                      <strong class="metric-pill-val" id="route-cache-status">Live Route</strong>
+                    </div>
+                  </div>
+
+                  <div class="route-geocoded-details">
+                    <div class="geo-point">
+                      <span class="geo-label">From:</span>
+                      <span class="geo-address" id="pickup-geocoded-display">Address</span>
+                    </div>
+                    <div class="geo-point">
+                      <span class="geo-label">To:</span>
+                      <span class="geo-address" id="delivery-geocoded-display">Address</span>
+                    </div>
+                  </div>
+
+                  <div class="route-attribution-note">
+                    <span id="route-attribution-text">© OpenStreetMap contributors, routing by OSRM</span>
+                    <span class="traffic-disclaimer">• Standard road network hierarchy duration; not live traffic.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Field 2: Delivery Distance -->
+              <div class="form-group">
+                <label for="delivery-distance" class="form-label">
+                  Delivery Distance (km)
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+                <span id="distance-hint" class="field-hint">Auto-calculated from road route, or fine-tune manually</span>
+                
+                <div class="input-wrapper">
+                  <input 
+                    type="number" 
+                    id="delivery-distance" 
+                    name="deliveryDistance" 
+                    class="form-control" 
+                    placeholder="e.g., 3.5" 
+                    required 
+                    min="0.1" 
+                    max="100" 
+                    step="0.1"
+                    aria-describedby="distance-hint distance-error"
+                  >
+                  <span class="input-unit">km</span>
+                </div>
+                <div id="distance-error" class="error-msg" role="alert" aria-live="polite">
+                  Please enter a valid delivery distance between 0.1 and 100 km.
+                </div>
+
+                <!-- Quick distance presets -->
+                <div class="preset-buttons" aria-label="Distance presets">
+                  <button type="button" class="preset-btn" data-dist="1.5">1.5 km (Near)</button>
+                  <button type="button" class="preset-btn" data-dist="3.0">3 km (Average)</button>
+                  <button type="button" class="preset-btn" data-dist="5.5">5.5 km (City)</button>
+                  <button type="button" class="preset-btn" data-dist="10.0">10 km (Far)</button>
+                </div>
+              </div>
+
+              <!-- Field 5: Number of Food Containers -->
+              <div class="form-group">
+                <label for="container-count" class="form-label">
+                  Number of Food Containers
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+                <span id="containers-hint" class="field-hint">Bowls, boxes, cups, and condiment containers</span>
+                
+                <div class="stepper-wrapper">
+                  <button type="button" class="stepper-btn" id="btn-decrement" aria-label="Decrease container count">-</button>
+                  <input 
+                    type="number" 
+                    id="container-count" 
+                    name="containerCount" 
+                    class="form-control text-center" 
+                    value="2" 
+                    min="1" 
+                    max="30" 
+                    required 
+                    aria-describedby="containers-hint container-error"
+                  >
+                  <button type="button" class="stepper-btn" id="btn-increment" aria-label="Increase container count">+</button>
+                </div>
+                <div id="container-error" class="error-msg" role="alert" aria-live="polite">
+                  Please enter a number of containers between 1 and 30.
+                </div>
+              </div>
+
+              <!-- Field 3: Delivery Method -->
+              <div class="form-group full-width">
+                <label id="delivery-method-label" class="form-label">
+                  Delivery Method
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+                <span id="method-hint" class="field-hint">Vehicle used to deliver the food order (UK DESNZ 2024 scientific emission benchmarks)</span>
+
+                <div class="options-grid" role="radiogroup" aria-labelledby="delivery-method-label">
+                  <label class="option-card" for="method-motorcycle">
+                    <input type="radio" name="deliveryMethod" id="method-motorcycle" value="motorcycle" checked>
+                    <div class="option-content">
+                      <span class="option-icon" aria-hidden="true">🛵</span>
+                      <strong class="option-title">Motorcycle</strong>
+                      <span class="option-factor">~103 g CO₂e/km</span>
+                      <span class="option-desc">Direct tailpipe + upstream fuel supply chain</span>
+                    </div>
+                  </label>
+
+                  <label class="option-card" for="method-car">
+                    <input type="radio" name="deliveryMethod" id="method-car" value="car">
+                    <div class="option-content">
+                      <span class="option-icon" aria-hidden="true">🚗</span>
+                      <strong class="option-title">Car</strong>
+                      <span class="option-factor">~171 g CO₂e/km</span>
+                      <span class="option-desc">Average petrol passenger car in city traffic</span>
+                    </div>
+                  </label>
+
+                  <label class="option-card" for="method-ev">
+                    <input type="radio" name="deliveryMethod" id="method-ev" value="ev">
+                    <div class="option-content">
+                      <span class="option-icon" aria-hidden="true">⚡</span>
+                      <strong class="option-title">Electric Vehicle</strong>
+                      <span class="option-factor">~47 g CO₂e/km</span>
+                      <span class="option-desc">Grid mix generation & transmission losses</span>
+                    </div>
+                  </label>
+
+                  <label class="option-card" for="method-bicycle">
+                    <input type="radio" name="deliveryMethod" id="method-bicycle" value="bicycle">
+                    <div class="option-content">
+                      <span class="option-icon" aria-hidden="true">🚲</span>
+                      <strong class="option-title">Bicycle</strong>
+                      <span class="option-factor">0 g CO₂e/km</span>
+                      <span class="option-desc">Zero direct tailpipe (lifecycle ~5g/km)</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Field 4: Packaging Type -->
+              <div class="form-group full-width">
+                <label id="packaging-type-label" class="form-label">
+                  Packaging Type
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+                <span id="packaging-hint" class="field-hint">Primary material used for containers and packaging (Cradle-to-Grave LCA data)</span>
+
+                <div class="options-grid" role="radiogroup" aria-labelledby="packaging-type-label">
+                  <label class="option-card" for="pkg-plastic">
+                    <input type="radio" name="packagingType" id="pkg-plastic" value="plastic" checked>
+                    <div class="option-content">
+                      <span class="option-icon" aria-hidden="true">🥡</span>
+                      <strong class="option-title">Plastic</strong>
+                      <span class="option-factor">~52 g CO₂e / unit</span>
+                      <span class="option-desc">Polypropylene container + lid lifecycle</span>
+                    </div>
+                  </label>
+
+                  <label class="option-card" for="pkg-paper">
+                    <input type="radio" name="packagingType" id="pkg-paper" value="paper">
+                    <div class="option-content">
+                      <span class="option-icon" aria-hidden="true">📦</span>
+                      <strong class="option-title">Paper / Cardboard</strong>
+                      <span class="option-factor">~25 g CO₂e / unit</span>
+                      <span class="option-desc">Biodegradable unbleached kraft paper box</span>
+                    </div>
+                  </label>
+
+                  <label class="option-card" for="pkg-reusable">
+                    <input type="radio" name="packagingType" id="pkg-reusable" value="reusable">
+                    <div class="option-content">
+                      <span class="option-icon" aria-hidden="true">🔄</span>
+                      <strong class="option-title">Reusable</strong>
+                      <span class="option-factor">~5 g CO₂e / unit</span>
+                      <span class="option-desc">Deposit box amortized over 50+ wash cycles</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Submit & Reset Buttons -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn-lg btn-primary" id="btn-calculate">
+                <span class="route-btn-spinner" id="calc-spinner" style="display: none;" aria-hidden="true"></span>
+                <svg class="btn-icon" id="calc-icon" viewBox="0 0 20 20" fill="currentColor" width="20" height="20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm0-4a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm4 0a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zm-4-4a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm4 0a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zm4 0a1 1 0 011-1h.01a1 1 0 110 2H14a1 1 0 01-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span id="calc-btn-text">Calculate Carbon Footprint</span>
+              </button>
+              
+              <button type="button" class="btn btn-lg btn-outline" id="btn-reset">
+                Reset Form
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Results Section (Dynamically updated from Backend API) -->
+    <section class="results-section hidden" id="results-section" aria-live="polite">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Backend Calculation Results</span>
+          <h2 class="section-title">Estimated Carbon Footprint</h2>
+          <p class="section-subtitle" id="results-order-name-display">
+            Server-verified emissions analysis
+          </p>
+        </div>
+
+        <div class="results-layout">
+          <!-- Total Emissions Highlight Card -->
+          <div class="result-summary-card">
+            <div class="summary-top">
+              <span class="summary-label">Total Estimated Emissions</span>
+              <div class="status-pill" id="result-status-pill">
+                <span class="status-dot"></span>
+                <span id="status-pill-text">Low Impact 🌱</span>
+              </div>
+            </div>
+
+            <div class="emissions-hero">
+              <span class="emissions-number" id="total-emissions-number">0</span>
+              <span class="emissions-unit" id="total-emissions-unit">g CO₂e</span>
+            </div>
+
+            <!-- Friendly status message -->
+            <div class="friendly-message-box" id="friendly-message-box">
+              <p id="friendly-status-text">
+                Your order emissions are calculated. Review the breakdown below!
+              </p>
+            </div>
+
+            <!-- Real-world equivalence card -->
+            <div class="equivalence-box">
+              <span class="equiv-title">Real-world perspective:</span>
+              <p class="equiv-desc" id="equivalence-text">
+                Equivalent to driving ~2.5 km in a petrol car or charging a smartphone 50 times.
+              </p>
+            </div>
+          </div>
+
+          <!-- Emissions Breakdown Card -->
+          <div class="result-breakdown-card">
+            <h3 class="card-subtitle">Emissions Breakdown</h3>
+
+            <!-- Custom visual progress bar -->
+            <div class="breakdown-bar-wrapper">
+              <div class="breakdown-bar" id="breakdown-bar" role="progressbar" aria-label="Emissions breakdown ratio">
+                <div class="bar-delivery" id="bar-delivery" style="width: 70%;" title="Delivery Emissions"></div>
+                <div class="bar-packaging" id="bar-packaging" style="width: 30%;" title="Packaging Emissions"></div>
+              </div>
+              <div class="bar-labels">
+                <span class="label-item">
+                  <span class="legend-dot color-delivery" aria-hidden="true"></span>
+                  Delivery: <strong id="pct-delivery">0%</strong>
+                </span>
+                <span class="label-item">
+                  <span class="legend-dot color-packaging" aria-hidden="true"></span>
+                  Packaging: <strong id="pct-packaging">0%</strong>
+                </span>
+              </div>
+            </div>
+
+            <!-- Metric Breakdown Grid -->
+            <div class="breakdown-metrics-grid">
+              <div class="breakdown-metric-item">
+                <div class="metric-header">
+                  <span class="metric-icon" aria-hidden="true">🚗</span>
+                  <span class="metric-name">Delivery Emissions</span>
+                </div>
+                <div class="metric-val" id="delivery-emissions-val">0 g CO₂e</div>
+                <div class="metric-sub" id="delivery-calc-details">0 km × 0 g/km</div>
+              </div>
+
+              <div class="breakdown-metric-item">
+                <div class="metric-header">
+                  <span class="metric-icon" aria-hidden="true">📦</span>
+                  <span class="metric-name">Packaging Emissions</span>
+                </div>
+                <div class="metric-val" id="packaging-emissions-val">0 g CO₂e</div>
+                <div class="metric-sub" id="packaging-calc-details">0 containers × 0 g</div>
+              </div>
+            </div>
+
+            <!-- Chart.js Container -->
+            <div class="chart-container-wrapper">
+              <div class="chart-box">
+                <canvas id="emissionsChart" width="220" height="220" aria-label="Emissions breakdown donut chart" role="img"></canvas>
+              </div>
+              <div class="chart-legend-custom">
+                <div class="legend-row">
+                  <span class="legend-indicator dot-delivery" aria-hidden="true"></span>
+                  <div class="legend-info">
+                    <span class="legend-title" id="legend-method-name">Delivery Transit</span>
+                    <span class="legend-value" id="chart-legend-delivery">0 g CO₂e</span>
+                  </div>
+                </div>
+                <div class="legend-row">
+                  <span class="legend-indicator dot-packaging" aria-hidden="true"></span>
+                  <div class="legend-info">
+                    <span class="legend-title" id="legend-pkg-name">Food Packaging</span>
+                    <span class="legend-value" id="chart-legend-packaging">0 g CO₂e</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Eco Swap Comparison Card -->
+        <div class="swap-comparison-card" id="swap-comparison-card">
+          <div class="swap-header">
+            <span class="swap-badge">🌱 Smart Eco Swap Insight</span>
+            <h3 class="swap-title">How you could reduce emissions for this order</h3>
+          </div>
+          <div class="swap-content" id="swap-content-text">
+            <!-- Populated via script.js -->
+          </div>
+        </div>
+
+        <!-- Assumptions & Methodology Explainer -->
+        <div class="assumptions-card">
+          <details class="assumptions-accordion">
+            <summary class="assumptions-summary">
+              <span class="summary-icon" aria-hidden="true">ℹ️</span>
+              <strong>Documented Emission Factors & Methodology (Government & Scientific Sources)</strong>
+              <span class="toggle-arrow" aria-hidden="true">▼</span>
+            </summary>
+            <div class="assumptions-content">
+              <p>
+                <strong>Methodological Disclosure:</strong> The emission factors used below are official benchmarks from the 
+                <strong>UK Department for Energy Security & Net Zero (DESNZ) / Defra 2024 GHG Conversion Factors</strong> 
+                and verified <strong>Life Cycle Assessment (LCA)</strong> literature. They represent documented averages for educational 
+                awareness and carbon footprint tracking, not verified individual tailpipe lab measurements.
+              </p>
+              <div class="factors-table-wrapper">
+                <table class="factors-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Category</th>
+                      <th scope="col">Scientific Factor</th>
+                      <th scope="col">Official Source & Boundary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Motorcycle / Scooter</strong></td>
+                      <td>103.2 g CO₂e / km</td>
+                      <td>UK DESNZ 2024 (Average petrol motorbike >125cc-500cc; Well-to-Wheel including direct combustion + upstream fuel supply chain)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Car (Petrol Passenger)</strong></td>
+                      <td>170.5 g CO₂e / km</td>
+                      <td>UK DESNZ 2024 (Average petrol passenger car in urban driving; direct combustion + upstream refining)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Electric Vehicle (EV)</strong></td>
+                      <td>47.1 g CO₂e / km</td>
+                      <td>UK DESNZ 2024 / EEA (0.19 kWh/km average EV consumption on national grid mix ~207 g CO₂e/kWh; zero direct tailpipe)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Bicycle / Walker</strong></td>
+                      <td>0.0 g CO₂e / km</td>
+                      <td>Scope 1 Direct Operational (0 g tailpipe). European Cyclists' Federation estimates ~5.0 g/km lifecycle including manufacturing & marginal calories.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Plastic Takeout Container</strong></td>
+                      <td>52.0 g CO₂e / unit</td>
+                      <td>Franklin Associates / PlasticsEurope Cradle-to-Grave LCA (Polypropylene container + lid molding, plus municipal disposal)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Paper / Kraft Box</strong></td>
+                      <td>24.5 g CO₂e / unit</td>
+                      <td>European Paper Packaging Alliance (EPPA) LCA (Unbleached kraft fibre manufacturing, converting, and end-of-life)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Reusable / Deposit Container</strong></td>
+                      <td>5.2 g CO₂e / use</td>
+                      <td>Zero Waste Europe & Ellen MacArthur Foundation (Amortized over 50+ wash cycles, including commercial dishwashing footprint)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Eco-Friendly Tips Section -->
+    <section class="tips-section" id="tips">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag">Sustainable Habits</span>
+          <h2 class="section-title">Simple Ways to Reduce Your Footprint</h2>
+          <p class="section-subtitle">
+            Three practical, high-impact habits that make food delivery significantly kinder to our planet.
+          </p>
+        </div>
+
+        <div class="tips-grid">
+          <!-- Tip 1 -->
+          <div class="tip-card">
+            <div class="tip-icon-wrapper icon-bike" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                <circle cx="5.5" cy="17.5" r="3.5"/>
+                <circle cx="18.5" cy="17.5" r="3.5"/>
+                <path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5L9 9l3-3 3 3-2 5.5"/>
+                <path d="M5.5 17.5l6-3.5 7 3.5"/>
+              </svg>
+            </div>
+            <span class="tip-badge">Transit Impact</span>
+            <h3 class="tip-title">1. Choose bicycle delivery for nearby orders</h3>
+            <p class="tip-description">
+              When ordering from restaurants within 1 to 4 kilometres, opt for bicycle or walker delivery whenever available on your delivery app. 
+              Eliminating petrol tailpipes on short urban journeys eliminates up to <strong>100% of transport CO₂e</strong> and reduces neighborhood traffic noise.
+            </p>
+            <div class="tip-impact-stat">
+              <strong>Potential saving:</strong> ~103 to 171g CO₂e per km avoided.
+            </div>
+          </div>
+
+          <!-- Tip 2 -->
+          <div class="tip-card">
+            <div class="tip-icon-wrapper icon-package" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                <line x1="12" y1="22.08" x2="12" y2="12"/>
+              </svg>
+            </div>
+            <span class="tip-badge">Waste Reduction</span>
+            <h3 class="tip-title">2. Select reusable or lower-impact packaging</h3>
+            <p class="tip-description">
+              Look for restaurants partnering with reusable container deposit programs (like club-box or returnable glass), 
+              or those using unbleached kraft paper. Always toggle off plastic cutlery, single-use napkins, and condiment packets in your app if you are eating at home.
+            </p>
+            <div class="tip-impact-stat">
+              <strong>Potential saving:</strong> Up to 90% packaging emissions cut by choosing reusable.
+            </div>
+          </div>
+
+          <!-- Tip 3 -->
+          <div class="tip-card">
+            <div class="tip-icon-wrapper icon-combine" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <span class="tip-badge">Trip Efficiency</span>
+            <h3 class="tip-title">3. Combine orders to reduce separate trips</h3>
+            <p class="tip-description">
+              Coordinate lunch or dinner with family, roommates, or coworkers instead of ordering separately 30 minutes apart. 
+              Consolidating meals into a single delivery trip cuts total courier travel in half and reduces delivery congestion in your neighborhood.
+            </p>
+            <div class="tip-impact-stat">
+              <strong>Potential saving:</strong> Cuts transit emissions by 50% or more per person.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Recent Order History Section (Loaded from SQLite Database) -->
+    <section class="history-section" id="history">
+      <div class="container">
+        <div class="history-header">
+          <div>
+            <span class="section-tag">SQLite Persistent Database</span>
+            <h2 class="section-title">Saved Order History</h2>
+            <p class="section-subtitle">
+              Calculations stored securely in the local SQLite database.
+            </p>
+          </div>
+          <div class="history-controls">
+            <button type="button" class="btn btn-sm btn-outline" id="btn-export-history" title="Export calculations as CSV file">
+              <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+              <span>Export CSV</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-danger-outline" id="btn-clear-history">
+              <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+              <span>Clear History</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- History Content Area -->
+        <div id="history-container" class="history-container">
+          <!-- Populated from GET /api/orders -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Clear History Confirmation Dialog / Modal -->
+  <dialog id="clear-confirm-modal" class="modal-dialog">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-icon" aria-hidden="true">🗑️</span>
+        <h3 class="modal-title">Clear Saved Orders?</h3>
+      </div>
+      <p class="modal-body">
+        Are you sure you want to delete all saved calculations from the SQLite database? This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-sm btn-outline" id="modal-cancel-btn">Cancel</button>
+        <button type="button" class="btn btn-sm btn-danger" id="modal-confirm-btn">Yes, Clear All</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo footer-logo">
+          <span class="logo-icon-wrapper" aria-hidden="true">
+            <svg class="leaf-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M26 6C19 6 12 11 9 17C6 23 8 26 8 26C8 26 11 28 17 25C23 22 28 15 28 8C28 6.9 27.1 6 26 6Z" fill="#2D6A4F" fill-opacity="0.3"/>
+              <path d="M26 6C19 6 12 11 9 17C6 23 8 26 8 26C8 26 11 28 17 25C23 22 28 15 28 8C28 6.9 27.1 6 26 6Z" stroke="#2D6A4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8 26C13 21 18 16 26 6" stroke="#52B788" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="footer-brand-title">Food Delivery Carbon Footprint Tracker</span>
+        </div>
+        <p class="footer-tagline">
+          Full-Stack Express & SQLite application with real-world OpenStreetMap road routing.
+        </p>
+      </div>
+
+      <div class="footer-meta">
+        <p class="disclaimer">
+          <strong>Attribution & Disclaimer:</strong> Routing provided by OpenStreetMap OSRM; geocoding by OpenStreetMap Nominatim. 
+          Emission factors are documented benchmarks from UK DESNZ / Defra 2024 and European LCA literature. 
+          Data is saved to local SQLite database.
+        </p>
+        <p class="copyright">
+          © <span id="current-year">2026</span> EcoTrack. Built for clean air & a greener planet.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>
